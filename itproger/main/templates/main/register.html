@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-white text-center py-4">
+                <h2 class="fw-bold mb-0">Регистрация</h2>
+            </div>
+            <div class="card-body p-4">
+
+                {% if form.errors %}
+                    <div class="alert alert-danger rounded-3" role="alert">
+                        Пожалуйста, исправьте ошибки
+                    </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Имя пользователя -->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label fw-medium">Имя пользователя</label>
+                        <input type="text"
+                               name="username"
+                               id="id_username"
+                               class="form-control rounded-3"
+                               value="{{ form.username.value|default:'' }}"
+                               placeholder="Выберите имя пользователя"
+                               required>
+                        {% if form.username.errors %}
+                            <div class="text-danger small mt-1">{{ form.username.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Пароль -->
+                    <div class="mb-3">
+                        <label for="id_password1" class="form-label fw-medium">Пароль</label>
+                        <input type="password"
+                               name="password1"
+                               id="id_password1"
+                               class="form-control rounded-3"
+                               placeholder="Введите пароль"
+                               required>
+                        {% if form.password1.errors %}
+                            <div class="text-danger small mt-1">{{ form.password1.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Подтверждение пароля -->
+                    <div class="mb-3">
+                        <label for="id_password2" class="form-label fw-medium">Подтверждение пароля</label>
+                        <input type="password"
+                               name="password2"
+                               id="id_password2"
+                               class="form-control rounded-3"
+                               placeholder="Повторите пароль"
+                               required>
+                        {% if form.password2.errors %}
+                            <div class="text-danger small mt-1">{{ form.password2.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Кнопка -->
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-3 fw-semibold">
+                        Зарегистрироваться
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'login' %}" class="text-decoration-none">Уже есть аккаунт? Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

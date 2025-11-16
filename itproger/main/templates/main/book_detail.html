@@ -1,0 +1,101 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'main' %}" class="d-inline-flex align-items-center text-decoration-none mb-4">
+    <i class="bi bi-arrow-left me-1"></i> Назад к списку
+</a>
+
+<div class="card book-card">
+    <div class="row g-0">
+        <div class="col-md-3 d-flex align-items-center justify-content-center p-4">
+            {% if book.cover %}
+                {% if book.cover_link %}
+                    <a href="{{ book.cover_link }}" target="_blank" rel="noopener noreferrer">
+                        <img src="{{ book.cover.url }}" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" alt="{{ book.title }}">
+                    </a>
+                {% else %}
+                    <img src="{{ book.cover.url }}" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" alt="{{ book.title }}">
+                {% endif %}
+            {% else %}
+                <i class="bi bi-book" style="font-size: 5rem; color: #e9ecef;"></i>
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <h1 class="card-title fw-bold">{{ book.title }}</h1>
+                <p class="text-muted fs-5">Автор: {{ book.author.name }}</p>
+                {% if book.publication_date %}
+                    <p class="text-muted"><i class="bi bi-calendar me-1"></i> {{ book.publication_date|date:"d E Y" }}</p>
+                {% endif %}
+
+                <h5 class="mt-4 mb-3">Аннотация</h5>
+                <p class="card-text">{{ book.annotation|linebreaks|default:"Аннотация отсутствует." }}</p>
+
+                <div class="mt-4">
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'toggle_read' book.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn read-btn
+                                {% if read_status %}read{% else %}unread{% endif %}">
+                                {% if read_status %}добавить в библиотеку {% else %}удалить из библиотеки{% endif %}
+                            </button>
+                        </form>
+                    {% endif %}
+
+                    {% if book.detail_link %}
+                        <a href="{{ book.detail_link }}" target="_blank" class="btn btn-primary ms-2">
+                            Перейти к книге
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h5 class="mb-3 fw-bold">Комментарии ({{ comments|length }})</h5>
+
+    {% if user.is_authenticated %}
+        <div class="card mb-4 border-0">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        {{ form.text.label_tag }}
+                        {{ form.text }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Оставить комментарий</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-muted">Чтобы оставить комментарий, <a href="{% url 'login' %}">войдите</a> в аккаунт.</p>
+    {% endif %}
+
+    {% if comments %}
+        <div class="list-group">
+            {% for comment in comments %}
+                <div class="list-group-item border-0 p-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ comment.author.username }}</strong>
+                        <small class="text-muted">{{ comment.created_at|date:"d E Y в H:i" }}</small>
+                    </div>
+                    <p class="mt-2 mb-0">{{ comment.text|linebreaks }}</p>
+
+                    {% if user.is_authenticated and comment.author == user %}
+                        <div class="mt-2">
+                            <a href="{% url 'edit_comment' comment.id %}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                            <a href="{% url 'delete_comment' comment.id %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Пока нет комментариев.</p>
+    {% endif %}
+</div>
+{% endblock %}
