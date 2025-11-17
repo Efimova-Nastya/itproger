@@ -28,7 +28,7 @@ class ReadBook(models.Model):
 
 class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author_comment = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
