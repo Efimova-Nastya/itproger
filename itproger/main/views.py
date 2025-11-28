@@ -51,7 +51,7 @@ def book_detail(request, book_id):
             form = CommentForm()
     else:
         form = None
-    comments = book.comments.select_related('author').all()
+    comments = book.comments.select_related('author_comment').all()
     return render(request, 'main/book_detail.html', {
         'book': book,
         'read_status': read_status,
