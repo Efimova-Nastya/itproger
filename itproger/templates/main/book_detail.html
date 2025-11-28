@@ -39,7 +39,7 @@
                             {% csrf_token %}
                             <button type="submit" class="btn read-btn
                                 {% if read_status %}read{% else %}unread{% endif %}">
-                                {% if read_status %}добавить в библиотеку {% else %}удалить из библиотеки{% endif %}
+                                {% if read_status %} удалить из библиотеки{% else %}добавить в библиотеку {% endif %}
                             </button>
                         </form>
                     {% endif %}
