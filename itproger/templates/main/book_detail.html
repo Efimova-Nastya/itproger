@@ -13,7 +13,7 @@
             {% if book.cover %}
                 {% if book.cover_link %}
                     <a href="{{ book.cover_link }}" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ book.cover.url }}" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" alt="{{ book.title }}">
+                        <img src="{{ book.cover.url }}" class="img-fluid rounded" style="max-height: 400px; object-fit: cover;" alt="{{ book.title }}">
                     </a>
                 {% else %}
                     <img src="{{ book.cover.url }}" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" alt="{{ book.title }}">

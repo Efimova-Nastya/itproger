@@ -35,7 +35,7 @@
         <div class="col-md-2 d-flex align-items-center justify-content-center p-3">
             {% if book.cover %}
                 {% if book.cover_link %}
-                    <img src="{{ book.cover.url }}" class="book-cover" alt="{{ book.title }}">
+                    <img src="{{ book.cover.url }}" class="book-cover" style="max-height:250px; object-fit: cover;" alt="{{ book.title }}">
                 {% else %}
                     <img src="{{ book.cover.url }}" class="book-cover" alt="{{ book.title }}">
                 {% endif %}
