@@ -23,7 +23,7 @@
                         <i class="bi bi-bar-chart" style="font-size: 1.2rem;"></i>
                         <span>Статистика</span>
                     </a>
-                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                    <form method="post" action="{% url 'account_logout' %}" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1">
                             <i class="bi bi-box-arrow-right" style="font-size: 1.2rem;"></i>
@@ -31,11 +31,11 @@
                         </button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1">
+                    <a href="{% url 'account_login' %}" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1">
                             <span>Войти</span>
 
                     </a>
-                <a href="{% url 'register' %}" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1">
+                <a href="{% url 'account_signup' %}" class="btn btn-link p-0 text-decoration-none d-flex align-items-center gap-1">
                         <i class="bi bi-box-arrow-in-right" style="font-size: 1.2rem;"></i>
                             <span>Регистрация</span>
 

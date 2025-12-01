@@ -1,0 +1,76 @@
+{% extends "main/base.html" %}
+{% load i18n %}
+
+{% block title %}Завершение регистрации{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-white text-center py-4">
+                <h2 class="fw-bold mb-0">Завершение регистрации</h2>
+            </div>
+            <div class="card-body p-4">
+
+                <p class="text-center mb-4">
+                    Вы вошли через <strong>{{ provider.name }}</strong> как
+                    <strong>{{ account.get_provider_account }}</strong>.
+                    Пожалуйста, заполните форму для завершения регистрации.
+                </p>
+
+                <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+                    {% csrf_token %}
+
+                    {{ form.non_field_errors }}
+
+                    <!-- Email (обычно уже заполнен) -->
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        <input type="email"
+                               name="email"
+                               id="id_email"
+                               value="{{ form.email.value|default:'' }}"
+                               class="form-control"
+                               readonly
+                               required>
+                        {% if form.email.errors %}
+                            <div class="text-danger small mt-1">{{ form.email.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Имя пользователя (опционально) -->
+                    {% if form.username %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Имя пользователя</label>
+                        <input type="text"
+                               name="username"
+                               id="id_username"
+                               value="{{ form.username.value|default:'' }}"
+                               class="form-control"
+                               placeholder="Выберите имя пользователя">
+                        {% if form.username.errors %}
+                            <div class="text-danger small mt-1">{{ form.username.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Скрытое поле -->
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-3">
+                            <i class="bi bi-person-plus me-2"></i>
+                            Зарегистрироваться
+                        </button>
+
+                        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary rounded-3">
+                            Отмена
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

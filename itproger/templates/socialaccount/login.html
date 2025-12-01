@@ -1,0 +1,92 @@
+{% extends "main/base.html" %}
+{% load i18n %}
+
+{% block title %}Вход через социальную сеть{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-white text-center py-4">
+                <h2 class="fw-bold mb-0">Вход через {{ provider.name }}</h2>
+            </div>
+            <div class="card-body p-4 text-center">
+
+                {% if process == "connect" %}
+                    <div class="mb-4">
+                        <div class="google-icon mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#DB4437" class="bi bi-google" viewBox="0 0 16 16">
+                                <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                            </svg>
+                        </div>
+                        <h4 class="mb-3">Привязать Google аккаунт</h4>
+                        <p class="text-muted">
+                            Вы собираетесь привязать аккаунт Google
+                            <strong>{{ request.user.email }}</strong>
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="mb-4">
+                        <div class="google-icon mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="#DB4437" class="bi bi-google" viewBox="0 0 16 16">
+                                <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                            </svg>
+                        </div>
+                        <h4 class="mb-3">Вход через Google</h4>
+                        <p class="text-muted">
+                            Вы собираетесь войти, используя аккаунт Google.
+                            Это безопасно и быстро!
+                        </p>
+                    </div>
+                {% endif %}
+
+                <div class="alert alert-info text-start">
+                    <h6 class="alert-heading mb-2">Что вы разрешаете:</h6>
+                    <ul class="mb-0 ps-3">
+                        <li>Просмотр вашего профиля Google</li>
+                        <li>Доступ к email адресу</li>
+                        <li>Безопасный вход без пароля</li>
+                    </ul>
+                </div>
+
+                <!-- Форма для подтверждения -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-3">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Продолжить
+                        </button>
+
+                        <a href="{% url 'account_login' %}" class="btn btn-outline-secondary rounded-3">
+                            <i class="bi bi-arrow-left me-2"></i>
+                            Вернуться назад
+                        </a>
+                    </div>
+                </form>
+
+                <div class="mt-4 pt-3 border-top">
+                    <p class="text-muted small">
+                        Нажимая "Продолжить", вы соглашаетесь с нашими
+                        <a href="#">Условиями использования</a> и
+                        <a href="#">Политикой конфиденциальности</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.google-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: rgba(219, 68, 55, 0.1);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+</style>
+{% endblock %}

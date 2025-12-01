@@ -1,0 +1,110 @@
+{% extends "main/base.html" %}
+{% load socialaccount %}
+
+{% block title %}Подключенные аккаунты{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-white py-4">
+                <h2 class="fw-bold mb-0">Подключенные аккаунты</h2>
+                <p class="text-muted mb-0 mt-2">Управление социальными аккаунтами</p>
+            </div>
+            <div class="card-body p-4">
+
+                <!-- Основной аккаунт -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Основной аккаунт</h5>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1">{{ user.email }}</h6>
+                                    <small class="text-muted">Стандартный аккаунт</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Подключенные социальные аккаунты -->
+                <div class="mb-4">
+                    <h5 class="mb-3">Социальные аккаунты</h5>
+
+                    {% if form.accounts %}
+                        <div class="list-group">
+                            {% for base_account in form.accounts %}
+                                {% with base_account.get_provider_account as account %}
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                {% if account.get_brand.name == "Google" %}
+                                                    <i class="bi bi-google text-danger" style="font-size: 1.5rem;"></i>
+                                                {% else %}
+                                                    <i class="bi bi-person" style="font-size: 1.5rem;"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">{{ account.get_brand.name }}</h6>
+                                                <small class="text-muted">{{ account }}</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <form method="post" action="{% url 'socialaccount_connections' %}" class="d-inline">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="account" value="{{ base_account.id }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-trash"></i> Отвязать
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            У вас нет подключенных социальных аккаунтов.
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Добавление нового аккаунта -->
+                <div class="mt-4">
+                    <h5 class="mb-3">Добавить аккаунт</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{% provider_login_url 'google' process='connect' %}"
+                               class="btn btn-outline-danger w-100 mb-2 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-google me-2"></i>
+                                Привязать Google
+                            </a>
+                        </div>
+                        <!-- Можно добавить другие провайдеры -->
+                    </div>
+                </div>
+
+                <!-- Информация -->
+                <div class="mt-4 pt-3 border-top">
+                    <div class="alert alert-light">
+                        <h6 class="alert-heading"><i class="bi bi-lightbulb me-2"></i>Советы</h6>
+                        <ul class="mb-0">
+                            <li>Вы можете привязать несколько социальных аккаунтов</li>
+                            <li>Привязанные аккаунты позволяют входить без пароля</li>
+                            <li>Отвязать аккаунт можно в любой момент</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
