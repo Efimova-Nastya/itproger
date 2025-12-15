@@ -80,7 +80,7 @@
             {% for comment in comments %}
                 <div class="list-group-item border-0 p-3">
                     <div class="d-flex justify-content-between">
-                        <strong>{{ comment.author.username }}</strong>
+                        <strong>{{ comment.author_comment.username }}</strong>
                         <small class="text-muted">{{ comment.created_at|date:"d E Y в H:i" }}</small>
                     </div>
                     <p class="mt-2 mb-0">{{ comment.text|linebreaks }}</p>
